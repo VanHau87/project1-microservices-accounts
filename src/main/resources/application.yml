@@ -17,3 +17,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
+  messages:
+    basename: messages
+    encoding: UTF-8
+    

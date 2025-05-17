@@ -1,21 +1,31 @@
-CREATE TABLE IF NOT EXISTS `customer` (
-  `customer_id` int AUTO_INCREMENT  PRIMARY KEY,
-  `name` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `mobile_number` varchar(20) NOT NULL,
-  `created_at` date NOT NULL,
-  `created_by` varchar(20) NOT NULL,
-  `updated_at` date DEFAULT NULL,
-    `updated_by` varchar(20) DEFAULT NULL
+CREATE TABLE customer (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  mobile_number VARCHAR(20) NOT NULL,
+  created_at DATETIME NOT NULL,
+  created_by VARCHAR(50) NOT NULL,
+  updated_at DATETIME NOT NULL,
+  updated_by VARCHAR(50) NOT NULL,
+  deleted BOOLEAN DEFAULT FALSE,
+  deleted_at DATETIME DEFAULT NULL,
+  deleted_by VARCHAR(50) DEFAULT NULL,
+  version INT DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS `accounts` (
-  `customer_id` int NOT NULL,
-   `account_number` int AUTO_INCREMENT  PRIMARY KEY,
-  `account_type` varchar(100) NOT NULL,
-  `branch_address` varchar(200) NOT NULL,
-  `created_at` date NOT NULL,
-   `created_by` varchar(20) NOT NULL,
-   `updated_at` date DEFAULT NULL,
-    `updated_by` varchar(20) DEFAULT NULL
+CREATE TABLE account (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  customer_id CHAR(36) NOT NULL,
+  account_number VARCHAR(20) NOT NULL,
+  account_type VARCHAR(100) NOT NULL,
+  branch_address VARCHAR(200) NOT NULL,
+  created_at DATETIME NOT NULL,
+  created_by VARCHAR(50) NOT NULL,
+  updated_at DATETIME NOT NULL,
+  updated_by VARCHAR(50) NOT NULL,
+  deleted BOOLEAN DEFAULT FALSE,
+  deleted_at DATETIME DEFAULT NULL,
+  deleted_by VARCHAR(50) DEFAULT NULL,
+  version INT DEFAULT 0,
+  CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customer(id)
 );
