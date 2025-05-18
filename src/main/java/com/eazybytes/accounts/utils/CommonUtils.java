@@ -1,6 +1,11 @@
 package com.eazybytes.accounts.utils;
 
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 
 public class CommonUtils {
 	
@@ -18,4 +23,12 @@ public class CommonUtils {
         }
         return sb.toString();
     }
+	public static ResponseEntity<Map<String, String>> mappingErrorResult(BindingResult result) {
+		Map<String, String> errors = result.getFieldErrors().stream()
+				.collect(Collectors.toMap(
+						FieldError -> FieldError.getField(), 
+						FieldError -> FieldError.getDefaultMessage(),
+						(existing, replacement) -> replacement));
+		return ResponseEntity.badRequest().body(errors);
+	}
 }

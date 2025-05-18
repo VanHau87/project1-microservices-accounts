@@ -13,16 +13,13 @@ import org.springframework.web.context.request.WebRequest;
 
 import com.eazybytes.accounts.utils.MessageUtils;
 
-import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 	
 	// ❗ Handle not found from repository
-	@ExceptionHandler({EntityNotFoundException.class, 
-					   NoResultException.class,
-					   EmptyResultDataAccessException.class})
+	@ExceptionHandler({EntityNotFoundException.class, EmptyResultDataAccessException.class})
 	public ResponseEntity<ApiErrorResponse> handleEntityNotFoundException(
             EntityNotFoundException ex, WebRequest request) {
         ApiErrorResponse errorResponse = new ApiErrorResponse(

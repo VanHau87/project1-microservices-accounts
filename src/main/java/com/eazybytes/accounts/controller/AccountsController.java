@@ -1,8 +1,6 @@
 package com.eazybytes.accounts.controller;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +16,7 @@ import com.eazybytes.accounts.constants.AccountConstant;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.dto.FieldQueryRequest;
 import com.eazybytes.accounts.service.AccountService;
+import com.eazybytes.accounts.utils.CommonUtils;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +31,7 @@ public class AccountsController {
 	@PostMapping("create")
 	public ResponseEntity<?> createAccount(@Valid @RequestBody CustomerDto dto, BindingResult result) {
     	if(result.hasErrors()) {
-    		Map<String, String> errors = result.getFieldErrors().stream()
-    				.collect(Collectors.toMap(
-    						FieldError -> FieldError.getField(), 
-    						FieldError -> FieldError.getDefaultMessage(),
-    						(existing, replacement) -> replacement));
-    		return ResponseEntity.badRequest().body(errors);
+    		return CommonUtils.mappingErrorResult(result);
     	}
         accountService.createAccount(dto);
 		return new ResponseEntity<>(AccountConstant.MESSAGE_201, HttpStatus.CREATED);
