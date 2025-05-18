@@ -3,6 +3,9 @@ package com.eazybytes.accounts.constants;
 public final class AccountConstant {
 	
 	public static final String  SAVINGS = "Savings";
+	public static final String  CHECKING = "Checking Account";
+	public static final String  TERM_DEPOSIT = "Term Deposit Account";
+	public static final String  CREDIT_CARD = "Credit Card Account";
     public static final String  ADDRESS = "123 Main Street, New York";
     public static final String  STATUS_201 = "201";
     public static final String  MESSAGE_201 = "Account created successfully";

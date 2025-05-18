@@ -1,8 +1,17 @@
 package com.eazybytes.accounts.service;
 
+import java.util.List;
+
 import com.eazybytes.accounts.dto.CustomerDto;
-import com.eazybytes.accounts.model.Account;
 
 public interface AccountService {
-	Account createAccount(CustomerDto dto);
+	void createAccount(CustomerDto dto);
+	CustomerDto fetchAccount(String mobilePhone);
+	/**
+	 * 
+	 * @param fieldName
+	 * @param value of fieldName must be unique in database
+	 * @return
+	 */
+	List<CustomerDto> fetchAccountDetails(String fieldName, String value);
 }
