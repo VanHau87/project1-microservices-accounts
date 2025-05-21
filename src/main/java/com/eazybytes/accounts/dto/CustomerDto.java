@@ -18,6 +18,5 @@ public class CustomerDto {
 	@NotBlank(message = "{notblank.users.mobileNumber}")
 	@UniqueField(entity = Customer.class, field = "mobileNumber", message = "{exist.mobile.number}")
     private String mobileNumber;
-	
 	private List<AccountDto> accounts;
 }

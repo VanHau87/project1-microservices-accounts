@@ -4,6 +4,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.eazybytes.accounts.constants.AccountType;
+import com.eazybytes.accounts.constants.BranchAddress;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.JoinColumn;
@@ -18,8 +21,8 @@ import lombok.Setter;
 @SQLRestriction("deleted = false")
 public class Account extends OptimisticLockEntity {
     private String accountNumber;
-    private String accountType;
-    private String branchAddress;
+    private AccountType accountType;
+    private BranchAddress branchAddress;
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;

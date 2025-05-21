@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eazybytes.accounts.constants.AccountConstant;
+import com.eazybytes.accounts.constants.MessagesConstants;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.dto.FieldQueryRequest;
 import com.eazybytes.accounts.service.AccountService;
@@ -34,7 +34,7 @@ public class AccountsController {
     		return CommonUtils.mappingErrorResult(result);
     	}
         accountService.createAccount(dto);
-		return new ResponseEntity<>(AccountConstant.MESSAGE_201, HttpStatus.CREATED);
+		return new ResponseEntity<>(MessagesConstants.MESSAGE_201, HttpStatus.CREATED);
 	}
 	@GetMapping("fetch/{mobilePhone}")
 	public ResponseEntity<CustomerDto> fetchAccount(@PathVariable String mobilePhone) {

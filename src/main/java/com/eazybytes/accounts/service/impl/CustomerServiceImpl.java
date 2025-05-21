@@ -56,4 +56,10 @@ public class CustomerServiceImpl implements CustomerService {
 	    }).toList();
 	}
 
+	@Override
+	public CustomerDto addAccountToUser() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

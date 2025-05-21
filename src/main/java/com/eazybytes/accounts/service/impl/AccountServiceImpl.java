@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.eazybytes.accounts.constants.AccountConstant;
 import com.eazybytes.accounts.dto.AccountDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.exceptions.EntityNotFoundException;
@@ -41,7 +40,7 @@ public class AccountServiceImpl implements AccountService {
 		Customer target = new Customer();
 		customerMapper.mapCustomerFromDto(dto, target);
         Customer customer = customerRepository.save(target);
-        Account account = generateAccount(customer);
+        Account account = CommonUtils.generateAccount(customer);
         accountRepository.save(account);
 	}
 	@Override
@@ -76,14 +75,5 @@ public class AccountServiceImpl implements AccountService {
             dtos.add(dto);
         }
 		return dtos;
-	}
-	private Account generateAccount(Customer customer) {
-		Account account = new Account();
-		account.setCustomer(customer);
-		String accountNumberString = CommonUtils.generateAccountNumber();
-        account.setAccountNumber(accountNumberString);
-        account.setAccountType(AccountConstant.SAVINGS);
-        account.setBranchAddress(AccountConstant.ADDRESS);
-        return account;
 	}
 }

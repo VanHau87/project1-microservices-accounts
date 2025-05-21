@@ -17,7 +17,19 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        search:
+          backend:
+            type: lucene
+            directory:
+              root: ${user.home}/indexes
   messages:
     basename: messages
     encoding: UTF-8
+logging:
+  level:
+    org:
+      hibernate:
+        search: DEBUG
     
