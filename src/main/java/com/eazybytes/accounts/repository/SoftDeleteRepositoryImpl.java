@@ -15,11 +15,8 @@ import jakarta.persistence.EntityManager;
 public class SoftDeleteRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID>
 		implements BaseRepository<T, ID> {
 
-	private final EntityManager entityManager;
-
 	public SoftDeleteRepositoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
 		super(entityInformation, entityManager);
-		this.entityManager = entityManager;
 	}
 
 	public void delete(T entity) {

@@ -1,7 +1,5 @@
 package com.eazybytes.accounts.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -43,9 +41,9 @@ public class AccountsController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 	@PostMapping("fetch")
-	public ResponseEntity<List<CustomerResponse>> fetchAccountDetails(@RequestBody @Valid FieldQueryRequest request) {
-		List<CustomerResponse> dtos = accountService.fetchAccountDetails(request.getFieldName(), request.getValue());
-        return new ResponseEntity<>(dtos, HttpStatus.OK);
+	public ResponseEntity<CustomerResponse> fetchAccountDetails(@RequestBody @Valid FieldQueryRequest request) {
+		CustomerResponse dto = accountService.fetchAccountDetails(request.getFieldName(), request.getValue());
+        return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 	@PostMapping("delete")
 	public ResponseEntity<String> deleteAccount(@RequestBody CustomerRequest request) {

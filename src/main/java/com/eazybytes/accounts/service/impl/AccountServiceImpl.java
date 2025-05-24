@@ -67,22 +67,14 @@ public class AccountServiceImpl implements AccountService {
 		return response;
 	}
 	@Override
-	public List<CustomerResponse> fetchAccountDetails(String fieldName, String value) {
-		String jpql = "SELECT c FROM Customer c WHERE c." + fieldName + " = :value";
-		List<Customer> results = entityManager
-		        .createQuery(jpql, Customer.class)
-		        .setParameter("value", value)
-		        .getResultList();
-		if (results.isEmpty()) {
+	public CustomerResponse fetchAccountDetails(String fieldName, String value) {
+		Customer customer = customerRepository.findByUniqueField(fieldName, value);
+		if (customer == null) {
 	        throw new EntityNotFoundException(fieldName, value);
 	    }
-		List<CustomerResponse> responses = new ArrayList<>();
-        for (Customer customer : results) {
-            CustomerResponse response = new CustomerResponse();
-            customerMapper.mapCustomerToResponse(customer, response);
-            responses.add(response);
-        }
-		return responses;
+		CustomerResponse response = new CustomerResponse();
+		customerMapper.mapCustomerToResponse(customer, response);
+		return response;
 	}
 	@Override
 	public boolean deleteAccount(CustomerRequest request) {

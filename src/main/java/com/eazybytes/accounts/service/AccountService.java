@@ -1,7 +1,5 @@
 package com.eazybytes.accounts.service;
 
-import java.util.List;
-
 import com.eazybytes.accounts.dto.CustomerRequest;
 import com.eazybytes.accounts.dto.CustomerResponse;
 
@@ -14,6 +12,6 @@ public interface AccountService {
 	 * @param value of fieldName
 	 * @return
 	 */
-	List<CustomerResponse> fetchAccountDetails(String fieldName, String value);
+	CustomerResponse fetchAccountDetails(String fieldName, String value);
 	boolean deleteAccount(CustomerRequest request);
 }

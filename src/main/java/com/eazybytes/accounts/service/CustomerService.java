@@ -6,7 +6,7 @@ import com.eazybytes.accounts.dto.CustomerRequest;
 import com.eazybytes.accounts.dto.CustomerResponse;
 
 public interface CustomerService {
-    void createCustomer(CustomerRequest dto);
+    void createCustomer(CustomerRequest request);
     List<CustomerResponse> fetchUsers();
-    CustomerRequest addAccountToUser();
+    boolean updateCustomer(CustomerRequest request);
 }
