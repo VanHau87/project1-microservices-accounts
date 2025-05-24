@@ -4,10 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class AccountDto {
-	private String accountNumber;
+public class AccountRequest {
 	@NotBlank(message = "{notblank.account.type}")
-    private String accountType;
-	@NotBlank(message = "{account.number.notblank}")
+	private String accountType;
     private String branchAddress;
 }

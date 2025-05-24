@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.eazybytes.accounts.dto.AccountDto;
-import com.eazybytes.accounts.dto.CustomerDto;
+import com.eazybytes.accounts.constants.AccountType;
+import com.eazybytes.accounts.constants.BranchAddress;
+import com.eazybytes.accounts.dto.AccountResponse;
+import com.eazybytes.accounts.dto.CustomerRequest;
+import com.eazybytes.accounts.dto.CustomerResponse;
 import com.eazybytes.accounts.exceptions.EntityNotFoundException;
 import com.eazybytes.accounts.model.Account;
 import com.eazybytes.accounts.model.Customer;
-import com.eazybytes.accounts.repository.AccountRepository;
 import com.eazybytes.accounts.repository.CustomerRepository;
 import com.eazybytes.accounts.service.AccountService;
 import com.eazybytes.accounts.utils.AccountMapper;
@@ -27,7 +29,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 	
-	private final AccountRepository accountRepository;
 	private final CustomerRepository customerRepository;
 	private final CustomerMapper customerMapper;
     private final AccountMapper accountMapper;
@@ -36,30 +37,34 @@ public class AccountServiceImpl implements AccountService {
 	private EntityManager entityManager;
 	
 	@Override
-	public void createAccount(CustomerDto dto) {
+	public void createAccount(CustomerRequest request) {
 		Customer target = new Customer();
-		customerMapper.mapCustomerFromDto(dto, target);
-        Customer customer = customerRepository.save(target);
-        Account account = CommonUtils.generateAccount(customer);
-        accountRepository.save(account);
+		customerMapper.mapCustomerFromRequest(request, target);
+        List<Account> accounts = request.getAccounts().stream().map(ar -> {
+            AccountType type = AccountType.valueOf(ar.getAccountType());
+            BranchAddress branchAddress = BranchAddress.valueOf(ar.getBranchAddress());
+            return CommonUtils.generateAccount(target, type, branchAddress);
+        }).toList();
+        target.setAccounts(accounts);
+        customerRepository.save(target);
 	}
 	@Override
-	public CustomerDto fetchAccount(String mobilePhone) {
+	public CustomerResponse fetchAccount(String mobilePhone) {
 		Customer customer = customerRepository.findByMobileNumber(mobilePhone)
 				.orElseThrow(() -> new EntityNotFoundException("Mobile phone", mobilePhone));
-		CustomerDto dto = new CustomerDto();
-		customerMapper.mapCustomerToDto(customer, dto);
-		List<AccountDto> accounts = new ArrayList<>();
+		CustomerResponse response = new CustomerResponse();
+		customerMapper.mapCustomerToResponse(customer, response);
+		List<AccountResponse> accounts = new ArrayList<>();
         for (Account account : customer.getAccounts()) {
-            AccountDto accountDto = new AccountDto();
-            accountMapper.mapAccountToDto(account, accountDto);
-            accounts.add(accountDto);
+            AccountResponse accountResponse = new AccountResponse();
+            accountMapper.mapAccountToResponse(account, accountResponse);
+            accounts.add(accountResponse);
         }
-        dto.setAccounts(accounts);
-		return dto;
+        response.setAccounts(accounts);
+		return response;
 	}
 	@Override
-	public List<CustomerDto> fetchAccountDetails(String fieldName, String value) {
+	public List<CustomerResponse> fetchAccountDetails(String fieldName, String value) {
 		String jpql = "SELECT c FROM Customer c WHERE c." + fieldName + " = :value";
 		List<Customer> results = entityManager
 		        .createQuery(jpql, Customer.class)
@@ -68,12 +73,12 @@ public class AccountServiceImpl implements AccountService {
 		if (results.isEmpty()) {
 	        throw new EntityNotFoundException(fieldName, value);
 	    }
-		List<CustomerDto> dtos = new ArrayList<>();
+		List<CustomerResponse> responses = new ArrayList<>();
         for (Customer customer : results) {
-            CustomerDto dto = new CustomerDto();
-            customerMapper.mapCustomerToDto(customer, dto);
-            dtos.add(dto);
+            CustomerResponse response = new CustomerResponse();
+            customerMapper.mapCustomerToResponse(customer, response);
+            responses.add(response);
         }
-		return dtos;
+		return responses;
 	}
 }

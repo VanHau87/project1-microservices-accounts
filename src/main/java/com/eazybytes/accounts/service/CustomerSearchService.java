@@ -3,7 +3,9 @@ package com.eazybytes.accounts.service;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.search.engine.search.query.dsl.SearchQueryOptionsStep;
 import org.hibernate.search.mapper.orm.Search;
+import org.hibernate.search.mapper.orm.search.loading.dsl.SearchLoadingOptionsStep;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,8 +29,8 @@ public class CustomerSearchService {
 	public Page<Customer> search(String keyword, int page, int size) {
 		Session session = entityManager.unwrap(Session.class);
         SearchSession searchSession = Search.session(session);
-        var searchQuery = searchSession.search(Customer.class)
-                .where(f -> f.bool(b -> {
+        SearchQueryOptionsStep<?, Customer, SearchLoadingOptionsStep, ?, ?> searchQuery = searchSession.search(Customer.class)
+                .where(f -> f.bool().with(b -> {
                     b.should(f.match()
                         .field("name")
                         .matching(keyword)

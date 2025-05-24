@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class CustomerDto {
+public class CustomerRequest {
 	@NotBlank(message = "{notblank.users.name}")
 	private String name;
 	@NotBlank(message = "{notblank.users.email}")
@@ -18,5 +18,5 @@ public class CustomerDto {
 	@NotBlank(message = "{notblank.users.mobileNumber}")
 	@UniqueField(entity = Customer.class, field = "mobileNumber", message = "{exist.mobile.number}")
     private String mobileNumber;
-	private List<AccountDto> accounts;
+	private List<AccountRequest> accounts;
 }

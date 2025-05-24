@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eazybytes.accounts.constants.MessagesConstants;
-import com.eazybytes.accounts.dto.CustomerDto;
+import com.eazybytes.accounts.dto.CustomerRequest;
+import com.eazybytes.accounts.dto.CustomerResponse;
 import com.eazybytes.accounts.model.Customer;
 import com.eazybytes.accounts.service.CustomerSearchService;
 import com.eazybytes.accounts.service.CustomerService;
@@ -32,7 +33,7 @@ public class CustomerController {
 	private final CustomerSearchService searchService;
 	
 	@PostMapping("create")
-	public ResponseEntity<?> createUser(@Valid @RequestBody CustomerDto dto, BindingResult result) {
+	public ResponseEntity<?> createUser(@Valid @RequestBody CustomerRequest dto, BindingResult result) {
 		if(result.hasErrors()) {
     		return CommonUtils.mappingErrorResult(result);
     	}
@@ -40,8 +41,8 @@ public class CustomerController {
 		return new ResponseEntity<>(MessagesConstants.MESSAGE_201, HttpStatus.CREATED);
     }
 	@GetMapping
-	public ResponseEntity<List<CustomerDto>> fetchUsers() {
-    	List<CustomerDto> dtos = customerService.fetchUsers();
+	public ResponseEntity<List<CustomerResponse>> fetchUsers() {
+    	List<CustomerResponse> dtos = customerService.fetchUsers();
     	return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
 	

@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eazybytes.accounts.constants.MessagesConstants;
-import com.eazybytes.accounts.dto.CustomerDto;
+import com.eazybytes.accounts.dto.CustomerRequest;
+import com.eazybytes.accounts.dto.CustomerResponse;
 import com.eazybytes.accounts.dto.FieldQueryRequest;
 import com.eazybytes.accounts.service.AccountService;
 import com.eazybytes.accounts.utils.CommonUtils;
@@ -29,7 +30,7 @@ public class AccountsController {
 	private final AccountService accountService;
 	
 	@PostMapping("create")
-	public ResponseEntity<?> createAccount(@Valid @RequestBody CustomerDto dto, BindingResult result) {
+	public ResponseEntity<?> createAccount(@Valid @RequestBody CustomerRequest dto, BindingResult result) {
     	if(result.hasErrors()) {
     		return CommonUtils.mappingErrorResult(result);
     	}
@@ -37,13 +38,16 @@ public class AccountsController {
 		return new ResponseEntity<>(MessagesConstants.MESSAGE_201, HttpStatus.CREATED);
 	}
 	@GetMapping("fetch/{mobilePhone}")
-	public ResponseEntity<CustomerDto> fetchAccount(@PathVariable String mobilePhone) {
-        CustomerDto dto = accountService.fetchAccount(mobilePhone);
+	public ResponseEntity<CustomerResponse> fetchAccount(@PathVariable String mobilePhone) {
+        CustomerResponse dto = accountService.fetchAccount(mobilePhone);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 	@PostMapping("fetch")
-	public ResponseEntity<List<CustomerDto>> fetchAccountDetails(@RequestBody @Valid FieldQueryRequest request) {
-		List<CustomerDto> dtos = accountService.fetchAccountDetails(request.getFieldName(), request.getValue());
+	public ResponseEntity<List<CustomerResponse>> fetchAccountDetails(@RequestBody @Valid FieldQueryRequest request) {
+		List<CustomerResponse> dtos = accountService.fetchAccountDetails(request.getFieldName(), request.getValue());
         return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
+	public ResponseEntity<String> updateAccountDetails(@RequestBody CustomerRequest dto) {
+        return new ResponseEntity<>(MessagesConstants.MESSAGE_200, HttpStatus.OK);
+    }
 }
