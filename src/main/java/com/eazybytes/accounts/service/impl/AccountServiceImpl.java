@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 
 import com.eazybytes.accounts.constants.AccountType;
 import com.eazybytes.accounts.constants.BranchAddress;
+import com.eazybytes.accounts.dto.AccountRequest;
 import com.eazybytes.accounts.dto.AccountResponse;
 import com.eazybytes.accounts.dto.CustomerRequest;
 import com.eazybytes.accounts.dto.CustomerResponse;
 import com.eazybytes.accounts.exceptions.EntityNotFoundException;
 import com.eazybytes.accounts.model.Account;
 import com.eazybytes.accounts.model.Customer;
+import com.eazybytes.accounts.repository.AccountRepository;
 import com.eazybytes.accounts.repository.CustomerRepository;
 import com.eazybytes.accounts.service.AccountService;
 import com.eazybytes.accounts.utils.AccountMapper;
@@ -30,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class AccountServiceImpl implements AccountService {
 	
 	private final CustomerRepository customerRepository;
+	private final AccountRepository accountRepository;
 	private final CustomerMapper customerMapper;
     private final AccountMapper accountMapper;
 	
@@ -80,5 +83,22 @@ public class AccountServiceImpl implements AccountService {
             responses.add(response);
         }
 		return responses;
+	}
+	@Override
+	public boolean deleteAccount(CustomerRequest request) {
+		String mobilePhone = request.getMobileNumber();
+		Customer customer = customerRepository.findByMobileNumber(mobilePhone)
+				.orElseThrow(() -> new EntityNotFoundException("Mobile phone", mobilePhone));
+        List<AccountRequest> deletedAccounts = request.getAccounts();
+        List<Account> accounts = customer.getAccounts();
+        if (accounts != null && !accounts.isEmpty()) {
+            for (Account account : accounts) {
+                String accountNumber = account.getAccountNumber();
+                if (deletedAccounts.stream().anyMatch(ar -> ar.getAccountNumber().equals(accountNumber))) {
+                    accountRepository.delete(account);
+                }
+            }
+		}
+        return true;
 	}
 }

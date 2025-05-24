@@ -15,4 +15,5 @@ public interface AccountService {
 	 * @return
 	 */
 	List<CustomerResponse> fetchAccountDetails(String fieldName, String value);
+	boolean deleteAccount(CustomerRequest request);
 }

@@ -47,7 +47,12 @@ public class AccountsController {
 		List<CustomerResponse> dtos = accountService.fetchAccountDetails(request.getFieldName(), request.getValue());
         return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
-	public ResponseEntity<String> updateAccountDetails(@RequestBody CustomerRequest dto) {
+	@PostMapping("delete")
+	public ResponseEntity<String> deleteAccount(@RequestBody CustomerRequest request) {
+        boolean result = accountService.deleteAccount(request);
+        if (!result) {
+            return new ResponseEntity<>(MessagesConstants.MESSAGE_417_DELETE, HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(MessagesConstants.MESSAGE_200, HttpStatus.OK);
     }
 }
