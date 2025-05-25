@@ -10,7 +10,7 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 @Documented
-@Target({ElementType.FIELD})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = UniqueFieldValidator.class)
 public @interface UniqueField {
@@ -18,6 +18,10 @@ public @interface UniqueField {
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-    Class<?> entity();     // Class name entity
-    String field();        // Field  in entity
+ // Các field cần check unique (tên thuộc tính của entity)
+    String[] fields();
+    // Entity class
+    Class<?> entity();
+    // Tên trường id entity, mặc định "id"
+    String idField() default "id";
 }

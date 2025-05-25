@@ -48,9 +48,12 @@ public class CustomerController {
 	}
 	
 	@PutMapping("update")
-	public ResponseEntity<?> updateUser(@RequestBody CustomerRequest request) {
-		boolean result = customerService.updateCustomer(request);
-		if(result)
+	public ResponseEntity<?> updateUser(@Valid @RequestBody CustomerRequest request, BindingResult result) {
+		if(result.hasErrors()) {
+    		return CommonUtils.mappingErrorResult(result);
+    	}
+		boolean isUpdated = customerService.updateCustomer(request);
+		if(isUpdated)
 			return new ResponseEntity<>(MessagesConstants.MESSAGE_200, HttpStatus.OK);
 		return new ResponseEntity<>(MessagesConstants.MESSAGE_417_UPDATE, HttpStatus.BAD_REQUEST);
 	}

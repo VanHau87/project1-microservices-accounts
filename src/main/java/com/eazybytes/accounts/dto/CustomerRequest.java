@@ -9,14 +9,14 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
+@UniqueField(entity = Customer.class, fields = {"email", "mobileNumber"})
 public class CustomerRequest {
+	private Long id;
 	@NotBlank(message = "{notblank.users.name}")
 	private String name;
 	@NotBlank(message = "{notblank.users.email}")
-	@UniqueField(entity = Customer.class, field = "email", message = "{exist.email}")
     private String email;
 	@NotBlank(message = "{notblank.users.mobileNumber}")
-	@UniqueField(entity = Customer.class, field = "mobileNumber", message = "{exist.mobile.number}")
     private String mobileNumber;
 	private List<AccountRequest> accounts;
 }

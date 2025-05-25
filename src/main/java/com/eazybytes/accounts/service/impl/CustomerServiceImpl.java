@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.eazybytes.accounts.dto.CustomerRequest;
 import com.eazybytes.accounts.dto.CustomerResponse;
-import com.eazybytes.accounts.dto.FieldQueryRequest;
+import com.eazybytes.accounts.exceptions.EntityNotFoundException;
 import com.eazybytes.accounts.model.Customer;
 import com.eazybytes.accounts.repository.CustomerRepository;
 import com.eazybytes.accounts.service.CustomerService;
@@ -49,23 +49,10 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public boolean updateCustomer(CustomerRequest request) {
-		FieldQueryRequest fieldQuery = new FieldQueryRequest();
-		if(request.getMobileNumber() != null) {
-    		fieldQuery.setFieldName("mobileNumber");
-    		fieldQuery.setValue(request.getMobileNumber());
-		} else if(request.getEmail() != null) {
-            fieldQuery.setFieldName("email");
-            fieldQuery.setValue(request.getEmail());
-        } else {
-            throw new IllegalArgumentException("Either mobileNumber or email must be provided");
-        }
-		Customer customer = customerRepository.findByUniqueField(fieldQuery.getFieldName(), fieldQuery.getValue());
-        if (customer != null) {
-            customerMapper.mapCustomerFromRequest(request, customer);
-            customerRepository.save(customer);
-            return true;
-        }
-		return false;
+		Customer customer = customerRepository.findById(request.getId())
+				.orElseThrow(() -> new EntityNotFoundException("Customer", request.getId()));
+		customerMapper.mapCustomerFromRequest(request, customer);
+        return true;
 	}
 
 }
