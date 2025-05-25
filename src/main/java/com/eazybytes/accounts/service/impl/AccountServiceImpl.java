@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.eazybytes.accounts.constants.AccountType;
 import com.eazybytes.accounts.constants.BranchAddress;
 import com.eazybytes.accounts.dto.AccountRequest;
 import com.eazybytes.accounts.dto.AccountResponse;
 import com.eazybytes.accounts.dto.CustomerRequest;
 import com.eazybytes.accounts.dto.CustomerResponse;
+import com.eazybytes.accounts.enums.AccountType;
 import com.eazybytes.accounts.exceptions.EntityNotFoundException;
 import com.eazybytes.accounts.model.Account;
 import com.eazybytes.accounts.model.Customer;

@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
-import com.eazybytes.accounts.constants.AccountType;
 import com.eazybytes.accounts.constants.BranchAddress;
+import com.eazybytes.accounts.enums.AccountType;
 import com.eazybytes.accounts.model.Account;
 import com.eazybytes.accounts.model.Customer;
 
