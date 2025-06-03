@@ -16,6 +16,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,11 +24,12 @@ import lombok.Setter;
 @Getter @Setter
 @SQLDelete(sql = "UPDATE account SET deleted = true, deleted_at = NOW(), deleted_by = ? WHERE id = ?")
 @SQLRestriction("deleted = false")
+@Table(name = "accounts")
 public class Account extends OptimisticLockEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    private User customer;
 	
 	@Column(nullable = false, length = 30, unique = true)
     private String accountNumber;

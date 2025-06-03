@@ -12,7 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.eazybytes.accounts.model.Customer;
+import com.eazybytes.accounts.model.User;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -26,10 +26,10 @@ public class CustomerSearchService {
 	@PersistenceContext
 	private final EntityManager entityManager;
 	
-	public Page<Customer> search(String keyword, int page, int size) {
+	public Page<User> search(String keyword, int page, int size) {
 		Session session = entityManager.unwrap(Session.class);
         SearchSession searchSession = Search.session(session);
-        SearchQueryOptionsStep<?, Customer, SearchLoadingOptionsStep, ?, ?> searchQuery = searchSession.search(Customer.class)
+        SearchQueryOptionsStep<?, User, SearchLoadingOptionsStep, ?, ?> searchQuery = searchSession.search(User.class)
                 .where(f -> f.bool().with(b -> {
                     b.should(f.match()
                         .field("name")
@@ -42,7 +42,7 @@ public class CustomerSearchService {
                     b.minimumShouldMatchNumber(1);
                 }));
         long totalHitCount = searchQuery.fetchTotalHitCount();
-        List<Customer> hits = searchQuery.fetchHits(page * size, size);
+        List<User> hits = searchQuery.fetchHits(page * size, size);
 
         return new PageImpl<>(hits, PageRequest.of(page, size), totalHitCount);
     }
